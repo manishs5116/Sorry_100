@@ -1,0 +1,178 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    min-height: 100vh;
+    background: radial-gradient(circle at center, #35121f, #12080d 75%);
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container { width: 100%; text-align: center; padding: 30px 12px; }
+
+h1 {
+    font-size: clamp(25px, 5vw, 42px);
+    color: #ffb6c8;
+    margin-bottom: 12px;
+    text-shadow: 0 0 20px rgba(255, 80, 130, 0.5);
+}
+
+.subtitle { color: #e7b8c5; font-size: 16px; margin-bottom: 30px; }
+
+/* ---------- Wheel area ---------- */
+
+.wheel-container {
+    width: min(94vw, 780px);
+    aspect-ratio: 1;
+    margin: auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Inner ring (text mode: small ring with messages radiating outward) */
+.wheel {
+    position: absolute;
+    width: 47%;
+    height: 47%;
+    border: 2px solid rgba(255, 140, 170, 0.9);
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(255, 70, 120, 0.4),
+                inset 0 0 25px rgba(255, 70, 120, 0.15);
+    transition: width .4s ease, height .4s ease;
+}
+
+/* Small screens: messages become glowing hearts on a bigger ring */
+.wheel-container.dots .wheel { width: 62%; height: 62%; }
+
+.messages-layer { position: absolute; inset: 0; }
+
+/* Every message sits on its own spoke, so nothing can overlap */
+.wheel-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    white-space: nowrap;
+    overflow: visible;
+    color: #ffd6e0;
+    font-weight: 600;
+    text-shadow: 0 0 8px rgba(255, 100, 150, 0.8);
+    opacity: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    line-height: 1;
+    transition: transform 1.3s cubic-bezier(.2,.8,.2,1), opacity .6s ease;
+}
+
+.wheel-message.right { justify-content: flex-start; }
+.wheel-message.left  { justify-content: flex-end; }
+
+.wheel-message span { pointer-events: none; }
+
+/* Dot (heart) mode */
+.wheel-message.dot {
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 50%;
+    background: #ff6f98;
+    box-shadow: 0 0 10px 2px rgba(255, 80, 130, 0.8);
+}
+.wheel-message.dot span { display: none; }
+
+.wheel-container.done .wheel-message { cursor: pointer; }
+.wheel-container.done .wheel-message:hover { color: #fff; text-shadow: 0 0 12px #ff5c8a; }
+.wheel-container.done .wheel-message.dot:hover { background: #fff; }
+.wheel-message.active { color: #fff; text-shadow: 0 0 14px #ff5c8a; }
+.wheel-message.dot.active { background: #fff; }
+
+/* ---------- Centre message ---------- */
+
+.center-message {
+    width: 36%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: rgba(100, 20, 45, 0.7);
+    border: 1px solid #ff8ba8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6%;
+    color: #ffe0e8;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: clamp(13px, 2.4vw, 20px);
+    line-height: 1.35;
+    box-shadow: 0 0 30px rgba(255, 70, 120, 0.3);
+    z-index: 5;
+    transition: opacity .35s ease;
+}
+
+.wheel-container.dots .center-message { width: 40%; }
+
+.final-heart { font-size: 40px; text-align: center; animation: heartbeat 1.2s infinite; }
+.final-heart p { font-size: 14px; margin-top: 8px; font-family: Georgia, serif; font-style: italic; }
+
+@keyframes heartbeat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+
+/* ---------- Counter / buttons ---------- */
+
+.counter { margin-top: 28px; color: #ffb6c8; font-size: 17px; }
+
+.hint { margin-top: 8px; color: #c98ea1; font-size: 13px; min-height: 18px; }
+
+.replay {
+    margin-top: 14px;
+    padding: 10px 22px;
+    border-radius: 999px;
+    border: 1px solid #ff8ba8;
+    background: rgba(255, 90, 130, 0.15);
+    color: #ffd6e0;
+    font-size: 15px;
+    cursor: pointer;
+    display: none;
+}
+.replay:hover { background: rgba(255, 90, 130, 0.3); }
+.replay:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+    .wheel-message { transition: opacity .3s ease; }
+    .final-heart { animation: none; }
+}
+.replay:hover {
+    background: rgba(255, 90, 130, 0.3);
+}
+
+/* Music opening button */
+
+.enter-btn {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    width: fit-content;
+    height: fit-content;
+
+    padding: 16px 35px;
+    border: 1px solid #ff8ba8;
+    border-radius: 30px;
+
+    background: linear-gradient(135deg, #ff6388, #a8174b);
+    color: white;
+
+    font-size: 17px;
+    cursor: pointer;
+
+    box-shadow: 0 0 25px rgba(255, 70, 120, 0.5);
+    z-index: 100;
+}
+
+.enter-btn:hover {
+    transform: scale(1.07);
+}
+
+.enter-btn.hidden {
+    display: none;
+}
